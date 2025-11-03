@@ -30,7 +30,7 @@ def load_generated_time_series(path):
     ts = ts.iloc[:, :-21]
     return [ts.loc[i].tolist() for i in range(len(ts))]
 
-def compare_series(ref_series, ts_series, output_dir, save_plots=False):
+def compare_series(ref_serie, ts_series, output_dir, save_plots=False):
     ref_norm = normalize_series(ref_series)
     ts_norm = [normalize_series(ts_i) for ts_i in ts_series]
     
