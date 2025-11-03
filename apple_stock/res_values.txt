@@ -1,0 +1,16 @@
+res1 values:
+number of values: 250
+number of ts: 10
+mean: 180
+std de: 0
+std dev of mean: 0
+trend: increasing
+trend intensity: 140
+trend std dev: 3
+valleys
+magnitude over the mean: 8%
+probability: 2%
+recovery both 
+duration: 60
+peak position in recovery: all
+periodicity: 0
