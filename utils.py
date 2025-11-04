@@ -85,11 +85,13 @@ def compute_dtw_matrix(s1, s2):
     Returns:
         list: The DTW matrix.
     """
+    print("Computing standard DTW matrix")
     n, m = len(s1), len(s2)
     dtw_matrix = [[float('inf')] * (m + 1) for _ in range(n + 1)]
     dtw_matrix[0][0] = 0
     for i in range(1, n + 1):
         for j in range(1, m + 1):
+            # print(f"Computing dtw_matrix[{i}][{j}]")
             cost = abs(s1[i - 1] - s2[j - 1])
             min_prev_cost = min(dtw_matrix[i - 1][j],
                                 dtw_matrix[i][j - 1],
@@ -109,12 +111,14 @@ def compute_dtw_matrix_restricted(s1, s2, window):
     Returns:
         list: The DTW matrix.
     """
+    print(f"Computing restricted DTW matrix with window size {window}")
     n, m = len(s1), len(s2)
     dtw_matrix = [[float('inf')] * (m + 1) for _ in range(n + 1)]
     window = max(window, abs(n - m))
     dtw_matrix[0][0] = 0
     for i in range(1, n + 1):
         for j in range(max(1, i - window), min(m + 1, i + window + 1)):
+            # print(f"Computing dtw_matrix[{i}][{j}]")
             cost = abs(s1[i - 1] - s2[j - 1])
             min_prev_cost = min(dtw_matrix[i - 1][j],
                                 dtw_matrix[i][j - 1],
@@ -195,7 +199,7 @@ def plot_dtw_matrix_with_path(dtw_matrix, path, title='DTW Cost Matrix', save_pa
         plt.show()
 
 
-def plot_dtw_alignment(s1, s2, method, window=None, title="DTW Alignment", save_dir=None):
+def plot_dtw_alignment(s1, s2, method, window=None, title="DTW Alignment", save_dir=None, dtw_matrix=None):
     """
     Calculates and plots the DTW alignment between two time series.
     
@@ -212,14 +216,16 @@ def plot_dtw_alignment(s1, s2, method, window=None, title="DTW Alignment", save_
     title_suffix = ""
     
     if method == 'standard':
-        dtw_matrix = compute_dtw_matrix(s1, s2)
+        if dtw_matrix is None:
+            dtw_matrix = compute_dtw_matrix(s1, s2)
         path = find_dtw_path(dtw_matrix)
         title_suffix = "(Standard DTW)"
         
     elif method == 'restricted':
         if window is None:
             raise ValueError("A 'window' size must be provided for the 'restricted' method.")
-        dtw_matrix = compute_dtw_matrix_restricted(s1, s2, window)
+        if dtw_matrix is None:
+            dtw_matrix = compute_dtw_matrix_restricted(s1, s2, window)
         path = find_dtw_path(dtw_matrix)
         title_suffix = f"(Restricted DTW, w={window})"
         
@@ -263,7 +269,7 @@ def plot_dtw_alignment(s1, s2, method, window=None, title="DTW Alignment", save_
         plt.show()
 
 
-def plot_dtw_path(s1, s2, title="DTW Path", save_dir=None):
+def plot_dtw_path(s1, s2, title="DTW Path", save_dir=None, dtw_matrix=None):
     """
     Plots the DTW cost matrix with the optimal warping path for standard DTW.
 
@@ -273,14 +279,15 @@ def plot_dtw_path(s1, s2, title="DTW Path", save_dir=None):
         title (str, optional): The title of the plot. Defaults to "DTW Path".
         save_dir (str, optional): If provided, saves the plot to this directory. Defaults to None.
     """
-    print("--- Standard DTW Distance ---")
-    cost_matrix_full = compute_dtw_matrix(s1, s2)
-    path_full = find_dtw_path(cost_matrix_full)
+
+    if dtw_matrix is None:
+        dtw_matrix = compute_dtw_matrix(s1, s2)
+
+    path_full = find_dtw_path(dtw_matrix)
 
     n, m = len(s1), len(s2)
-    distance_full = cost_matrix_full[n][m]
+    distance_full = dtw_matrix[n][m]
 
-    print(f"Standard DTW Distance: {distance_full}")
     # print(f"Path: {path_full}")
     
     save_path = None
@@ -288,10 +295,10 @@ def plot_dtw_path(s1, s2, title="DTW Path", save_dir=None):
         file_name = sanitize_filename(title)
         save_path = os.path.join(save_dir, file_name)
         
-    plot_dtw_matrix_with_path(cost_matrix_full, path_full, title, save_path)
+    plot_dtw_matrix_with_path(dtw_matrix, path_full, title, save_path)
 
 
-def plot_dtw_path_restricted(s1, s2, window_size, title="DTW Path Restricted", save_dir=None):
+def plot_dtw_path_restricted(s1, s2, window_size, title="DTW Path Restricted", save_dir=None, dtw_matrix=None):
     """
     Plots the DTW with local search restriction cost matrix with the optimal warping path for restricted DTW.
 
@@ -303,11 +310,12 @@ def plot_dtw_path_restricted(s1, s2, window_size, title="DTW Path Restricted", s
         save_dir (str, optional): If provided, saves the plot to this directory. Defaults to None.
     """
     print("\n--- Restricted DTW Distance---")
-    cost_matrix_restricted = compute_dtw_matrix_restricted(s1, s2, window_size)
-    path_restricted = find_dtw_path(cost_matrix_restricted)
+    if dtw_matrix is None:
+        dtw_matrix = compute_dtw_matrix_restricted(s1, s2, window_size)
+    path_restricted = find_dtw_path(dtw_matrix)
 
     n, m = len(s1), len(s2)
-    distance_restricted = cost_matrix_restricted[n][m]
+    distance_restricted = dtw_matrix[n][m]
 
     print(f"Restricted DTW Distance (w={window_size}): {distance_restricted}")
     # print(f"Path: {path_restricted}")
@@ -317,4 +325,4 @@ def plot_dtw_path_restricted(s1, s2, window_size, title="DTW Path Restricted", s
         file_name = sanitize_filename(title)
         save_path = os.path.join(save_dir, file_name)
 
-    plot_dtw_matrix_with_path(cost_matrix_restricted, path_restricted, title, save_path)
+    plot_dtw_matrix_with_path(dtw_matrix, path_restricted, title, save_path)
