@@ -286,8 +286,8 @@ def plot_dtw_path(s1, s2, title="DTW Path", save_dir=None, dtw_matrix=None):
     path_full = find_dtw_path(dtw_matrix)
 
     n, m = len(s1), len(s2)
-    distance_full = dtw_matrix[n][m]
-
+    print("\n--- Standard DTW Distance---")
+    print(f"Standard DTW Distance: {dtw_matrix[n][m]}")
     # print(f"Path: {path_full}")
     
     save_path = None
@@ -315,9 +315,7 @@ def plot_dtw_path_restricted(s1, s2, window_size, title="DTW Path Restricted", s
     path_restricted = find_dtw_path(dtw_matrix)
 
     n, m = len(s1), len(s2)
-    distance_restricted = dtw_matrix[n][m]
-
-    print(f"Restricted DTW Distance (w={window_size}): {distance_restricted}")
+    print(f"Restricted DTW Distance (w={window_size}): {dtw_matrix[n][m]}")
     # print(f"Path: {path_restricted}")
 
     save_path = None

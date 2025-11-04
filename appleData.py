@@ -90,14 +90,13 @@ def compare_weather():
     print("Maximum DTW Distance:", max(distances))
 
 
-def compare_weather_downsampled():
-    output_dir = "outputs_weather_downsampled"
+def compare_weather_downsampled(downsample_factor):
+    output_dir = f"outputs_weather_downsampled_{downsample_factor}"
     os.makedirs(output_dir, exist_ok=True)
 
     ts_weather = load_generated_time_series("weather_data/temperatures.csv")
     ref_weather = load_weather_reference_data()
 
-    downsample_factor = 30
     ts_weather_downsampled = [ts[::downsample_factor] for ts in ts_weather]
     ref_weather_downsampled = ref_weather[::downsample_factor]
     print(f"Length of weather data: {len(ts_weather[0])}")
@@ -116,5 +115,5 @@ def compare_weather_downsampled():
 if __name__ == "__main__":
     # compare_apple_stock()
     # compare_weather()
-    # compare_weather_downsampled()
+    compare_weather_downsampled(80)
     pass
