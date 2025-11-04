@@ -25,6 +25,7 @@ def sanitize_filename(title):
     Cleans a string to make it a valid filename.
     Replaces spaces with underscores and removes invalid characters.
     """
+    title = title.replace(".", "_")
     # Replace spaces and certain separators with underscores
     filename = re.sub(r'[ \t=(),]+', '_', title.lower())
     # Remove all non-alphanumeric characters (except underscores)
@@ -187,8 +188,8 @@ def plot_dtw_matrix_with_path(dtw_matrix, path, title='DTW Cost Matrix', save_pa
     ax.set_title(title)
     ax.set_xlabel('Sequence 2 Index (j)')
     ax.set_ylabel('Sequence 1 Index (i)')
-    ax.set_xticks(np.arange(matrix.shape[1]))
-    ax.set_yticks(np.arange(matrix.shape[0]))
+    # ax.set_xticks(np.arange(matrix.shape[1]))
+    # ax.set_yticks(np.arange(matrix.shape[0]))
     ax.legend()
     plt.grid(True, which='both', linestyle='--', linewidth=0.5, color='gray')
     
