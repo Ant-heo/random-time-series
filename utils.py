@@ -4,6 +4,17 @@ import numpy as np
 import os
 import re
 
+def smooth_ts(ts, window_size=5):
+    if window_size < 2:
+        return np.array(ts)
+    window = np.ones(window_size) / window_size
+    smoothed_ts = np.convolve(ts, window, mode='same')
+
+    return smoothed_ts
+
+def get_mean_distance(dtw_matrix):
+    return dtw_matrix[-1][-1] / len(find_dtw_path(dtw_matrix))
+
 def normalize_series(s):
     """
     Normalizes a time series to the range [0, 1].

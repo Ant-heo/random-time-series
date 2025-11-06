@@ -1,0 +1,19 @@
+DTW Distances: [494.1754146415479]
+Average DTW Distance: 494.1754146415479
+Minimum DTW Distance: 494.1754146415479
+Maximum DTW Distance: 494.1754146415479
+Length of weather data: 8760
+Length of downsampled weather data: 292
+Length of reference weather data: 8760
+Length of downsampled reference weather data: 292
+Comparing 1 time series to reference series...
+Computing standard DTW matrix
+Computing restricted DTW matrix with window size 29
+
+Plotting Time Series 0
+
+--- Standard DTW Distance---
+Standard DTW Distance: 22.32176335854543
+
+--- Restricted DTW Distance---
+Restricted DTW Distance (w=29): 22.32176335854543
